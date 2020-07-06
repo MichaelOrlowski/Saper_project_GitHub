@@ -203,6 +203,263 @@ namespace Saper_project_GitHub
                 iconLabel.Text = bombNumbers[i];
 
             }
+
+            //For each label checking the number of bombs around 
+
+            foreach (Control control in tableLayoutPanel1.Controls)
+            {
+
+                bool middlecolumn = false;
+                bool middlerow = false;
+                bool leftfree = false;
+                bool rightfree = false;
+                bool topfree = false;
+                bool botfree = false;
+
+                Label iconLabel = control as Label;
+                if (iconLabel.Text == "")
+                {
+                    string clean = iconLabel.Name.Trim('l', 'a', 'b', 'e');
+                    int cleanLabelNumber = Convert.ToInt32(clean);
+
+                    int bombs = 0;
+
+                    //Checking next and previous label for bombs
+
+                    for (int i = 0; i < rows; i++)
+                    {
+                        if (cleanLabelNumber > (cols * i) + 1 && cleanLabelNumber < (cols * i) + cols)
+                        {
+                            middlecolumn = true;
+
+                            var labelnext = Controls.Find("label" + (cleanLabelNumber + 1), true);
+                            var labelprev = Controls.Find("label" + (cleanLabelNumber - 1), true);
+                            Label iconLabelnext = (Label)labelnext[0] as Label;
+                            Label iconLabelprev = (Label)labelprev[0] as Label;
+                            if (iconLabelnext.Text == "M")
+                            {
+                                bombs += 1;
+                            }
+                            if (iconLabelprev.Text == "M")
+                            {
+                                bombs += 1;
+                            }
+
+
+                        }
+                        else if (cleanLabelNumber == (cols * i) + cols)
+                        {
+                            leftfree = true;
+
+                            var labelprev = Controls.Find("label" + (cleanLabelNumber - 1), true);
+                            Label iconLabelprev = (Label)labelprev[0] as Label;
+                            if (iconLabelprev.Text == "M")
+                            {
+                                bombs += 1;
+                            }
+                        }
+                        else if (cleanLabelNumber == (cols * i) + 1)
+                        {
+                            rightfree = true;
+
+                            var labelnext = Controls.Find("label" + (cleanLabelNumber + 1), true);
+                            Label iconLabelnext = (Label)labelnext[0] as Label;
+                            if (iconLabelnext.Text == "M")
+                            {
+                                bombs += 1;
+                            }
+                        }
+                    }
+
+
+                    // checking the upper and bottom bomb apearans
+
+                    if (cleanLabelNumber > cols && cleanLabelNumber < cols * (rows - 1) + 1)
+                    {
+                        middlerow = true;
+
+                        var labelbottom = Controls.Find("label" + (cleanLabelNumber + cols), true);
+                        var labelupper = Controls.Find("label" + (cleanLabelNumber - cols), true);
+                        Label iconLabelbottom = (Label)labelbottom[0] as Label;
+                        Label iconLabelupper = (Label)labelupper[0] as Label;
+                        if (iconLabelbottom.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelupper.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (cleanLabelNumber >= cols * (rows - 1))
+                    {
+                        topfree = true;
+
+                        var labelupper = Controls.Find("label" + (cleanLabelNumber - cols), true);
+                        Label iconLabelupper = (Label)labelupper[0] as Label;
+                        if (iconLabelupper.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (cleanLabelNumber <= cols)
+                    {
+                        botfree = true;
+
+                        var labelbottom = Controls.Find("label" + (cleanLabelNumber + cols), true);
+                        Label iconLabelbottom = (Label)labelbottom[0] as Label;
+                        if (iconLabelbottom.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+
+                    // checking for corner bombs
+
+
+                    if (middlecolumn == true && middlerow == true)
+                    {
+                        var labellefttop = Controls.Find("label" + (cleanLabelNumber - cols - 1), true);
+                        var labelrighttop = Controls.Find("label" + (cleanLabelNumber - cols + 1), true);
+                        var labelleftbot = Controls.Find("label" + (cleanLabelNumber + cols - 1), true);
+                        var labelrightbot = Controls.Find("label" + (cleanLabelNumber + cols + 1), true);
+                        Label iconLabellefttop = (Label)labellefttop[0] as Label;
+                        Label iconLabelrighttop = (Label)labelrighttop[0] as Label;
+                        Label iconLabelleftbot = (Label)labelleftbot[0] as Label;
+                        Label iconLabelrightbot = (Label)labelrightbot[0] as Label;
+                        if (iconLabellefttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelrighttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelleftbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelrightbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (middlecolumn == true && topfree == true)
+                    {
+                        var labellefttop = Controls.Find("label" + (cleanLabelNumber - cols - 1), true);
+                        var labelrighttop = Controls.Find("label" + (cleanLabelNumber - cols + 1), true);
+                        Label iconLabellefttop = (Label)labellefttop[0] as Label;
+                        Label iconLabelrighttop = (Label)labelrighttop[0] as Label;
+                        if (iconLabellefttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelrighttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (middlecolumn == true && botfree == true)
+                    {
+                        var labelleftbot = Controls.Find("label" + (cleanLabelNumber + cols - 1), true);
+                        var labelrightbot = Controls.Find("label" + (cleanLabelNumber + cols + 1), true);
+                        Label iconLabelleftbot = (Label)labelleftbot[0] as Label;
+                        Label iconLabelrightbot = (Label)labelrightbot[0] as Label;
+                        if (iconLabelleftbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelrightbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (middlerow == true && leftfree == true)
+                    {
+                        var labellefttop = Controls.Find("label" + (cleanLabelNumber - cols - 1), true);
+                        var labelleftbot = Controls.Find("label" + (cleanLabelNumber + cols - 1), true);
+                        Label iconLabellefttop = (Label)labellefttop[0] as Label;
+                        Label iconLabelleftbot = (Label)labelleftbot[0] as Label;
+                        if (iconLabellefttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelleftbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (middlerow == true && rightfree == true)
+                    {
+                        var labelrighttop = Controls.Find("label" + (cleanLabelNumber - cols + 1), true);
+                        var labelrightbot = Controls.Find("label" + (cleanLabelNumber + cols + 1), true);
+                        Label iconLabelrighttop = (Label)labelrighttop[0] as Label;
+                        Label iconLabelrightbot = (Label)labelrightbot[0] as Label;
+                        if (iconLabelrighttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                        if (iconLabelrightbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+
+                    // checking THE CORNERS!
+
+                    if (cleanLabelNumber == 1)
+                    {
+                        var labelrightbot = Controls.Find("label" + (cleanLabelNumber + cols + 1), true);
+                        Label iconLabelrightbot = (Label)labelrightbot[0] as Label;
+                        if (iconLabelrightbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (cleanLabelNumber == cols)
+                    {
+                        var labelleftbot = Controls.Find("label" + (cleanLabelNumber + cols - 1), true);
+                        Label iconLabelleftbot = (Label)labelleftbot[0] as Label;
+                        if (iconLabelleftbot.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (cleanLabelNumber == cols * (rows - 1) + 1)
+                    {
+                        var labelrighttop = Controls.Find("label" + (cleanLabelNumber - 4), true);
+                        Label iconLabelrighttop = (Label)labelrighttop[0] as Label;
+                        if (iconLabelrighttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+                    else if (cleanLabelNumber == cols * rows)
+                    {
+                        var labellefttop = Controls.Find("label" + (cleanLabelNumber - 6), true);
+                        Label iconLabellefttop = (Label)labellefttop[0] as Label;
+                        if (iconLabellefttop.Text == "M")
+                        {
+                            bombs += 1;
+                        }
+                    }
+
+                    if (bombs == 0)
+                    {
+                        iconLabel.Text = "";
+                    }
+                    else
+                    {
+                        iconLabel.Font = new Font("Arial", fontSize, FontStyle.Bold);
+                        iconLabel.Text = Convert.ToString(bombs);
+                    }
+
+                }
+
+            }
+
+
+
         }
 
         private void label_Click(object sender, EventArgs e)
