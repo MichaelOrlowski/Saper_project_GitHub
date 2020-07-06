@@ -131,7 +131,10 @@ namespace Saper_project_GitHub
         }
 
 
+        private void CheckTheWinner(int toWin)
+        {
 
+        }
 
 
         /// <summary>
@@ -462,8 +465,212 @@ namespace Saper_project_GitHub
 
         }
 
+        /// <summary>
+        /// Clicking label, changing parameters and checking if its a bomb
+        /// </summary>
+        /// <param name="sender">Clicked Label</param>
+        /// <param name="e"></param>
+
         private void label_Click(object sender, EventArgs e)
-        { }
+        {
+
+            int rows = Convert.ToInt32(Form2.SetValueForHeight);
+            int cols = Convert.ToInt32(Form2.SetValueForWidth);
+
+            MouseEventArgs me = (MouseEventArgs)e;
+
+            Label clickedLabel = sender as Label;
+
+            if (me.Button == MouseButtons.Left)
+            {
+                if (clickedLabel != null)
+                {
+
+
+                    // If the clicked label is black, the player clicked
+                    // an icon that's already been revealed --
+                    // ignore the click
+                    if (clickedLabel.BackColor == Color.Gray || clickedLabel.BackColor == Color.Green)
+                        return;
+
+                    // Checking if label is without text value
+
+                    if (clickedLabel.Text == "")
+                    {
+
+                        clickedLabel.ForeColor = Color.Black;
+                        clickedLabel.BackColor = Color.Gray;
+
+
+                        string clean = clickedLabel.Name.Trim('l', 'a', 'b', 'e');
+                        int cleanLabelNumber = Convert.ToInt32(clean);
+
+                        //Checking if the labels around exist and if they do click them
+
+                        if (cleanLabelNumber - cols <= 0 || (cleanLabelNumber - 1) % cols == 0)
+                        {
+                        }
+                        else
+                        {
+                            var labellefttop = Controls.Find("label" + (cleanLabelNumber - cols - 1), true);
+                            Label iconLabellefttop = (Label)labellefttop[0] as Label;
+                            label_Click(iconLabellefttop, e);
+                        }
+                        if (cleanLabelNumber - cols > 0)
+                        {
+                            var labeltop = Controls.Find("label" + (cleanLabelNumber - cols), true);
+                            Label iconLabeltop = (Label)labeltop[0] as Label;
+                            label_Click(iconLabeltop, e);
+                        }
+
+                        if (cleanLabelNumber - cols <= 0 || (cleanLabelNumber % cols == 0))
+                        {
+                        }
+                        else
+                        {
+                            var labelrighttop = Controls.Find("label" + (cleanLabelNumber - cols + 1), true);
+                            Label iconLabelrighttop = (Label)labelrighttop[0] as Label;
+                            label_Click(iconLabelrighttop, e);
+                        }
+
+                        if (cleanLabelNumber % cols == 1)
+                        {
+                        }
+                        else
+                        {
+                            var labelleft = Controls.Find("label" + (cleanLabelNumber - 1), true);
+                            Label iconLabelleft = (Label)labelleft[0] as Label;
+                            label_Click(iconLabelleft, e);
+                        }
+
+                        if (cleanLabelNumber % cols == 0)
+                        {
+                        }
+                        else
+                        {
+                            var labelright = Controls.Find("label" + (cleanLabelNumber + 1), true);
+                            Label iconLabelright = (Label)labelright[0] as Label;
+                            label_Click(iconLabelright, e);
+                        }
+
+                        if (cleanLabelNumber > cols * (rows - 1) || (cleanLabelNumber % cols) == 1)
+                        {
+                        }
+                        else
+                        {
+                            var labelleftbot = Controls.Find("label" + (cleanLabelNumber + cols - 1), true);
+                            Label iconLabelleftbot = (Label)labelleftbot[0] as Label;
+                            label_Click(iconLabelleftbot, e);
+
+                        }
+
+                        if (cleanLabelNumber > cols * (rows - 1))
+                        {
+                        }
+                        else
+                        {
+                            var labelbot = Controls.Find("label" + (cleanLabelNumber + cols), true);
+                            Label iconLabelbot = (Label)labelbot[0] as Label;
+                            label_Click(iconLabelbot, e);
+                        }
+
+                        if (cleanLabelNumber > cols * (rows - 1) || cleanLabelNumber % cols == 0)
+                        {
+                        }
+                        else
+                        {
+                            var labelrightbot = Controls.Find("label" + (cleanLabelNumber + cols + 1), true);
+                            Label iconLabelrightbot = (Label)labelrightbot[0] as Label;
+                            label_Click(iconLabelrightbot, e);
+                        }
+
+
+                        Globals.score += 1;
+
+                        int toWin = (cols * rows) - Convert.ToInt32(Form2.SetValueForBombs);
+
+                        CheckTheWinner(toWin);
+
+
+
+                    }
+                    else if (clickedLabel.Text == "M")
+                    {
+                        // If its bomb End the game, set up Global score
+                        // For next Game and Go to Form2
+
+                        clickedLabel.ForeColor = Color.Black;
+                        foreach (Control control in tableLayoutPanel1.Controls)
+                        {
+                            Label iconLabel = control as Label;
+                            if (iconLabel.Text == "M")
+                            {
+                                iconLabel.ForeColor = Color.Black;
+
+                            }
+                        }
+
+                        timer1.Stop();
+                        MessageBox.Show("Bomba! Przegrałeś!");
+                        Globals.score = 0;
+                        // Application.Exit();
+                        this.Hide();
+                        Form2 a1 = new Form2();
+                        a1.ShowDialog();
+                    }
+                    else
+                    {
+                        // Check function for the Winner
+
+                        clickedLabel.BackColor = Color.Gray;
+                        clickedLabel.ForeColor = Color.Black;
+
+
+                        Globals.score += 1;
+
+                        int toWin = (cols * rows) - Convert.ToInt32(Form2.SetValueForBombs);
+
+                        CheckTheWinner(toWin);
+                    }
+
+
+
+                }
+            }
+            else if (me.Button == MouseButtons.Right)
+            {
+                //if its right button Mark label
+
+                if (clickedLabel.BackColor == Color.Gray)
+                {
+
+                }
+                else
+                {
+                    if (clickedLabel.BackColor == Color.Green)
+                    {
+
+                        clickedLabel.BackColor = Color.DarkRed;
+                        clickedLabel.ForeColor = Color.DarkRed;
+                        int bombs = Convert.ToInt32(counterbombslabel.Text);
+                        counterbombslabel.Text = Convert.ToString(bombs + 1);
+                    }
+                    else
+                    {
+
+                        clickedLabel.BackColor = Color.Green;
+                        clickedLabel.ForeColor = Color.Green;
+                        int bombs = Convert.ToInt32(counterbombslabel.Text);
+                        counterbombslabel.Text = Convert.ToString(bombs - 1);
+                    }
+                }
+
+            }
+
+
+
+
 
         }
+    }
 }
