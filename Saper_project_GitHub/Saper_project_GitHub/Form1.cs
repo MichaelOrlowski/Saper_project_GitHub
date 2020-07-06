@@ -130,11 +130,37 @@ namespace Saper_project_GitHub
 
         }
 
+        /// <summary>
+        /// Checking if score is equal to sorce u have to get to win
+        /// If it is function shows every bomb,
+        /// stoping timer, gives message about win 
+        /// and then returns for Form2
+        /// </summary>
+        /// <param name="toWin">Number u need to score to Win</param>
 
         private void CheckTheWinner(int toWin)
         {
+            if (Globals.score == toWin)
+            {
+                foreach (Control control in tableLayoutPanel1.Controls)
+                {
+                    Label iconLabel = control as Label;
+                    if (iconLabel.Text == "M")
+                    {
+                        iconLabel.ForeColor = Color.Black;
 
+                    }
+                }
+                timer1.Stop();
+                MessageBox.Show("Gratulacje! Wygrałeś!");
+                Globals.score = 0;
+                this.Hide();
+                Form2 a1 = new Form2();
+                a1.ShowDialog();
+
+            }
         }
+
 
 
         /// <summary>
