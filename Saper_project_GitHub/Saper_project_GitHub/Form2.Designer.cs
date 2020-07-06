@@ -53,6 +53,7 @@
             this.radioButton3.TabIndex = 26;
             this.radioButton3.Text = "Trudny";
             this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioButton3.Click += new System.EventHandler(this.radio_button_click3);
             // 
             // radioButton2
             // 
@@ -63,6 +64,7 @@
             this.radioButton2.TabIndex = 25;
             this.radioButton2.Text = "Średni";
             this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.Click += new System.EventHandler(this.radio_button_click2);
             // 
             // radioButton1
             // 
@@ -75,6 +77,7 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Łatwy";
             this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.Click += new System.EventHandler(this.radio_button_click1);
             // 
             // label5
             // 
@@ -153,6 +156,7 @@
             this.button2.TabIndex = 15;
             this.button2.Text = "EXIT";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.exit_click);
             // 
             // button1
             // 
@@ -162,6 +166,7 @@
             this.button1.TabIndex = 14;
             this.button1.Text = "START";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.start_click);
             // 
             // Form2
             // 
