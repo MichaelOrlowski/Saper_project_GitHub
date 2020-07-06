@@ -12,9 +12,28 @@ namespace Saper_project_GitHub
 {
     public partial class Form1 : Form
     {
+        /// <summary>
+        /// Initializing Form1 
+        /// creating TableLayout with rows and columns from Form2
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
+
+            int boomset = Convert.ToInt32(Form2.SetValueForBombs);
+            int rows = Convert.ToInt32(Form2.SetValueForHeight);
+            int cols = Convert.ToInt32(Form2.SetValueForWidth);
+
+            ModifyTableLayout(rows, cols);
+        }
+
+        /// <summary>
+        /// Global variable for checking player actual score
+        /// </summary>
+        static class Globals
+        {
+            public static int score = 0;
+
         }
 
         /// <summary>
@@ -76,6 +95,38 @@ namespace Saper_project_GitHub
 
 
             return fontSize = i;
+        }
+
+        /// <summary>
+        /// Adding rows and columns for Table Layout Panel
+        /// also setting labels for every square
+        /// </summary>
+        /// <param name="rows">Number of Rows</param>
+        /// <param name="cols">Number of Columns</param>
+        private void ModifyTableLayout(int rows, int cols)
+        {
+            TableLayoutPanel panel = tableLayoutPanel1;
+
+            panel.ColumnCount = cols;
+            panel.RowCount = rows;
+
+
+            for (int i = 0; i <= rows - 5; i++)
+            {
+                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            }
+            for (int i = 0; i <= cols - 5; i++)
+            {
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
+            }
+
+            for (int j = 0; j < cols * rows; j++)
+            {
+
+                panel.Controls.Add(new Label() { Text = null }, j + 1, panel.RowCount - rows - 1);
+
+            }
+
         }
 
     }
