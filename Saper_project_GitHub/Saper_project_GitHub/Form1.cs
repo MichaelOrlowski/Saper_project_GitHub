@@ -25,6 +25,7 @@ namespace Saper_project_GitHub
             int cols = Convert.ToInt32(Form2.SetValueForWidth);
 
             ModifyTableLayout(rows, cols);
+            AssignIconsToSquares(boomset, rows, cols);
         }
 
         /// <summary>
@@ -129,5 +130,83 @@ namespace Saper_project_GitHub
 
         }
 
-    }
+
+
+
+
+        /// <summary>
+        /// Firstly creating an array containing number of bombs
+        /// Secondly for each label setting parameters 
+        /// crating a list with random number and then put bombs into random labels from list
+        /// assign number of bombs around for each label
+        /// </summary>
+        /// <param name="boomset">Getting Number of Bombs</param>
+        /// <param name="rows">Getting number of rows</param>
+        /// <param name="cols">Getting Number of columns</param>
+        private void AssignIconsToSquares(int boomset, int rows, int cols)
+        {
+
+            counterbombslabel.Text = Convert.ToString(boomset);
+
+            // array with "M" value which represtns bomb icon in Wingdings Font
+
+            string[] bombNumbers = new string[boomset];
+            for (int i = 0; i < boomset; i++)
+            {
+                bombNumbers[i] = "M";
+            }
+
+            int labelNumber = 0;
+
+            // Setting parameters for every label (Click, Dock,AutoSize,TextAlig, Name - very important)
+
+            foreach (Control control in tableLayoutPanel1.Controls)
+            {
+
+                Label iconLabel = control as Label;
+                iconLabel.Name = "label" + (labelNumber + 1);
+                iconLabel.Click += new EventHandler(label_Click);
+                iconLabel.Dock = DockStyle.Fill;
+                iconLabel.AutoSize = false;
+                iconLabel.TextAlign = ContentAlignment.MiddleCenter;
+                FontSize(rows, cols);
+                iconLabel.Font = new Font("Wingdings", fontSize, FontStyle.Bold);
+                labelNumber++;
+
+
+                if (iconLabel != null)
+                {
+                    iconLabel.ForeColor = iconLabel.BackColor;
+                }
+
+            }
+
+            // Select random number for each bomb
+
+            List<int> listNumbers = new List<int>();
+            int number;
+            Random bombRandom = new Random();
+
+            // Assign bombs to random labels
+
+            for (int i = 0; i < boomset; i++)
+            {
+                do
+                {
+                    number = bombRandom.Next(1, (rows * cols + 1));
+
+                } while (listNumbers.Contains(number));
+                listNumbers.Add(number);
+
+                var labels = Controls.Find("label" + number, true);
+                Label iconLabel = (Label)labels[0] as Label;
+                iconLabel.Text = bombNumbers[i];
+
+            }
+        }
+
+        private void label_Click(object sender, EventArgs e)
+        { }
+
+        }
 }
